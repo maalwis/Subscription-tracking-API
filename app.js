@@ -1,6 +1,8 @@
 // Importing the express library (which helps create a web server)
 import express from 'express';
 
+import {PORT} from "./config/env.js";
+
 // Creating an instance of an Express application
 // `app` is the main object we use to define routes and middleware
 const app = express();
@@ -12,9 +14,13 @@ app.get("/", (req, res) => {
 });
 
 // Starting the server on port 8080 - app.listen()` makes the server start listening for requests
-app.listen(8080, () => {
+app.listen(PORT, () => {
     // Logging a message to the console when the server starts
-    console.log("Server is running on http://localhost:8080");
+    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`Port: ${process.env.PORT}`);
+
+
 });
 
 // Exporting the `app` object so it can be used in other files
