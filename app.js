@@ -3,9 +3,18 @@ import express from 'express';
 
 import {PORT} from "./config/env.js";
 
+import userRouter from "./routes/user.routes.js";
+import authRouter from "./routes/auth.routes.js";
+import subscriptionRouter from "./routes/subscription.routes.js";
+
 // Creating an instance of an Express application
 // `app` is the main object we use to define routes and middleware
 const app = express();
+
+app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+app.use('/api/v1/subscription', subscriptionRouter);
+
 
 // Setting up a GET route
 app.get("/", (req, res) => {
