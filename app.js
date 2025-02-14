@@ -6,6 +6,7 @@ import {PORT} from "./config/env.js";
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
+import connectToDB from "./database/mongodb.js";
 
 // Creating an instance of an Express application
 // `app` is the main object we use to define routes and middleware
@@ -22,12 +23,14 @@ app.get("/", (req, res) => {
     res.send("Welcome");
 });
 
-// Starting the server on port 8080 - app.listen()` makes the server start listening for requests
-app.listen(PORT, () => {
+// Starting the server on port PORT - app.listen()` makes the server start listening for requests
+app.listen(PORT, async () => {
     // Logging a message to the console when the server starts
     console.log(`Server is running on http://localhost:${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`Port: ${process.env.PORT}`);
+
+    await connectToDB();
 
 
 });
