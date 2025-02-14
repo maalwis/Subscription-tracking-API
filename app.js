@@ -1,5 +1,6 @@
 // Importing the express library (which helps create a web server)
 import express from 'express';
+import cookieParser from 'cookie-parser';
 
 import {PORT} from "./config/env.js";
 
@@ -7,14 +8,21 @@ import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
 import connectToDB from "./database/mongodb.js";
+import errorMiddleware from "./middlewares/error.middleware.js";
 
 // Creating an instance of an Express application
 // `app` is the main object we use to define routes and middleware
 const app = express();
 
+app.use(express.json());
+
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/subscription', subscriptionRouter);
+
+app.use(errorMiddleware);
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 
 // Setting up a GET route
