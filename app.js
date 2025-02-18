@@ -9,6 +9,7 @@ import authRouter from "./routes/auth.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
 import connectToDB from "./database/mongodb.js";
 import errorMiddleware from "./middlewares/error.middleware.js";
+import arcjetMiddleware from "./middlewares/arcjet.middleware.js";
 
 // Creating an instance of an Express application
 // `app` is the main object we use to define routes and middleware
@@ -23,6 +24,7 @@ app.use('/api/v1/subscription', subscriptionRouter);
 app.use(errorMiddleware);
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(arcjetMiddleware);
 
 
 // Setting up a GET route
