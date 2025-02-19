@@ -1,38 +1,37 @@
-import {Router} from 'express';
-
+import { Router } from 'express';
+import authorize from '../middlewares/auth.middleware.js';
+import {
+    createSubscription,
+    getUserSubscriptions,
+    getAllSubscriptions,
+    getSubscriptionById,
+    updateSubscription,
+    deleteSubscription,
+    cancelSubscription,
+    getUpcomingRenewals
+} from '../controllers/subscription.controller.js';
 
 const subscriptionRouter = Router();
 
-subscriptionRouter.get("/", (req, res) => {
-    res.send({success: true, message: "GET all subscriptions"});
-})
+// Static routes first
+subscriptionRouter.get('/upcoming-renewals', authorize, getUpcomingRenewals);
 
-subscriptionRouter.get("/:id", (req, res) => {
-    res.send({success: true, message: "GET subscription details"});
-})
+// get subscription by user Id
+subscriptionRouter.get('/user/:id', authorize, getUserSubscriptions);
 
-subscriptionRouter.post("/", (req, res) => {
-    res.send({success: true, message: "CREATE subscription"});
-})
+// List all subscriptions (could be restricted to admins in a real-world scenario)
+subscriptionRouter.get('/', authorize, getAllSubscriptions);
 
-subscriptionRouter.put("/:id", (req, res) => {
-    res.send({success: true, message: "UPDATE subscription"});
-})
+// Creation route
+subscriptionRouter.post('/', authorize, createSubscription);
 
-subscriptionRouter.delete("/:id", (req, res) => {
-    res.send({success: true, message: "DELETE subscription"});
-})
+// Dynamic routes – these require a subscription ID
+subscriptionRouter.get('/:id', authorize, getSubscriptionById);
 
-subscriptionRouter.get("/user/:id", (req, res) => {
-    res.send({success: true, message: "GET all users subscriptions"});
-})
+subscriptionRouter.put('/:id', authorize, updateSubscription);
 
-subscriptionRouter.put("/:id/cancel", (req, res) => {
-    res.send({success: true, message: "CANCEL subscription"});
-})
+subscriptionRouter.put('/:id/cancel', authorize, cancelSubscription);
 
-subscriptionRouter.get("/upcoming-renewals", (req, res) => {
-    res.send({success: true, message: "GET all upcoming renewals"});
-})
+subscriptionRouter.delete('/:id', authorize, deleteSubscription);
 
 export default subscriptionRouter;
